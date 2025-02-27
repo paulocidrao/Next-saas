@@ -23,7 +23,7 @@ export function SignUpForm() {
     signUpAction,
     () => {
       router.push('/auth/sign-in')
-    },
+    }
   )
 
   return (
@@ -100,11 +100,6 @@ export function SignUpForm() {
         </Button>
 
         <Separator />
-
-        <Button type="submit" className="w-full" variant="outline">
-          <Image src={githubIcon} alt="" className="mr-2 size-4 dark:invert" />
-          Sign up with GitHub
-        </Button>
       </form>
 
       <Separator />
