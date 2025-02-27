@@ -10,43 +10,46 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { acceptInvite } from '@/http/accept-invite'
-import { getinvite } from '@/http/get-invite'
+import { getInvite } from '@/http/get-invite'
 
 dayjs.extend(relativeTime)
 
-interface InvatePageProps {
+interface InvitePageProps {
   params: {
     id: string
   }
 }
 
-export default async function InvitePage({ params }: InvatePageProps) {
+export default async function InvitePage({ params }: InvitePageProps) {
   const inviteId = params.id
-  const isUserAutheticated = isAuthenticated()
-  const { invite } = await getinvite(inviteId)
+
+  const { invite } = await getInvite(inviteId)
+  const isUserAuthenticated = isAuthenticated()
 
   let currentUserEmail = null
 
-  if (isUserAutheticated) {
+  if (isUserAuthenticated) {
     const { user } = await auth()
 
     currentUserEmail = user.email
   }
 
-  const isUserAutheticatedWithSameEmailFromInvite =
+  const userIsAuthenticatedWithSameEmailFromInvite =
     currentUserEmail === invite.email
 
-  async function signInFormInvite() {
+  async function signInFromInvite() {
     'use server'
 
     cookies().set('inviteId', inviteId)
 
     redirect(`/auth/sign-in?email=${invite.email}`)
   }
+
   async function acceptInviteAction() {
     'use server'
 
-    await acceptInvite(invite.id)
+    await acceptInvite(inviteId)
+
     redirect('/')
   }
 
@@ -54,12 +57,13 @@ export default async function InvitePage({ params }: InvatePageProps) {
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
       <div className="flex w-full max-w-sm flex-col justify-center space-y-6">
         <div className="flex flex-col items-center space-y-4">
-          <Avatar className="size-6">
+          <Avatar className="size-16">
             {invite.author?.avatarUrl && (
               <AvatarImage src={invite.author.avatarUrl} />
             )}
             <AvatarFallback />
           </Avatar>
+
           <p className="text-balance text-center leading-relaxed text-muted-foreground">
             <span className="font-medium text-foreground">
               {invite.author?.name ?? 'Someone'}
@@ -72,16 +76,19 @@ export default async function InvitePage({ params }: InvatePageProps) {
             <span className="text-xs">{dayjs(invite.createdAt).fromNow()}</span>
           </p>
         </div>
+
         <Separator />
-        {!isUserAutheticated && (
-          <form action={signInFormInvite}>
+
+        {!isUserAuthenticated && (
+          <form action={signInFromInvite}>
             <Button type="submit" variant="secondary" className="w-full">
               <LogIn className="mr-2 size-4" />
               Sign in to accept the invite
             </Button>
           </form>
         )}
-        {isUserAutheticatedWithSameEmailFromInvite && (
+
+        {userIsAuthenticatedWithSameEmailFromInvite && (
           <form action={acceptInviteAction}>
             <Button type="submit" variant="secondary" className="w-full">
               <CheckCircle className="mr-2 size-4" />
@@ -90,25 +97,28 @@ export default async function InvitePage({ params }: InvatePageProps) {
           </form>
         )}
 
-        {isUserAutheticated && !isUserAutheticatedWithSameEmailFromInvite && (
+        {isUserAuthenticated && !userIsAuthenticatedWithSameEmailFromInvite && (
           <div className="space-y-4">
             <p className="text-balance text-center text-sm leading-relaxed text-muted-foreground">
               This invite was sent to{' '}
               <span className="font-medium text-foreground">
                 {invite.email}
               </span>{' '}
-              but you currently authenticate as
+              but you are currently authenticated as{' '}
               <span className="font-medium text-foreground">
                 {currentUserEmail}
               </span>
+              .
             </p>
+
             <div className="space-y-2">
               <Button className="w-full" variant="secondary" asChild>
                 <a href="/api/auth/sign-out">
                   <LogOut className="mr-2 size-4" />
-                  Sing ou from {currentUserEmail}
+                  Sign out from {currentUserEmail}
                 </a>
               </Button>
+
               <Button className="w-full" variant="outline" asChild>
                 <Link href="/">Back to dashboard</Link>
               </Button>

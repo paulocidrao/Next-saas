@@ -57,8 +57,9 @@ export function ProjectForm() {
           </p>
         )}
       </div>
+
       <div className="space-y-1">
-        <Label htmlFor="description">Project description</Label>
+        <Label htmlFor="description">Description</Label>
         <Textarea name="description" id="description" />
 
         {errors?.description && (

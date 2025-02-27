@@ -18,7 +18,6 @@ import { signInWithEmailAndPassword } from './actions'
 
 export function SignInForm() {
   const router = useRouter()
-
   const searchParams = useSearchParams()
 
   const [{ errors, message, success }, handleSubmit, isPending] = useFormState(

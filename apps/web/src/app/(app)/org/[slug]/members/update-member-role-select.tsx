@@ -1,27 +1,28 @@
 'use client'
-import { SelectValue } from '@radix-ui/react-select'
-import type { Role } from '@saas/auth'
-import type { ComponentProps } from 'react'
+
+import { Role } from '@saas/auth'
+import { ComponentProps } from 'react'
 
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select'
 
-import { updateMemeberAction } from './action'
+import { updateMemberAction } from './actions'
 
-interface UpdateMemberRoleSelectionprops extends ComponentProps<typeof Select> {
+interface UpdateMemberRoleSelectProps extends ComponentProps<typeof Select> {
   memberId: string
 }
 
-export function UpdateMemberRoleSelection({
+export function UpdateMemberRoleSelect({
   memberId,
   ...props
-}: UpdateMemberRoleSelectionprops) {
-  const updateMemberRole = async (role: Role) => {
-    await updateMemeberAction(memberId, role)
+}: UpdateMemberRoleSelectProps) {
+  async function updateMemberRole(role: Role) {
+    await updateMemberAction(memberId, role)
   }
 
   return (

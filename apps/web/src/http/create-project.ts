@@ -9,9 +9,9 @@ interface CreateProjectRequest {
 type CreateProjectResponse = void
 
 export async function createProject({
+  org,
   name,
   description,
-  org,
 }: CreateProjectRequest): Promise<CreateProjectResponse> {
   await api.post(`organizations/${org}/projects`, {
     json: {

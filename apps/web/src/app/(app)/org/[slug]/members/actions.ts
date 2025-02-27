@@ -1,6 +1,6 @@
 'use server'
 
-import { type Role, roleSchema } from '@saas/auth'
+import { Role, roleSchema } from '@saas/auth'
 import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
@@ -11,44 +11,15 @@ import { removeMember } from '@/http/remove-member'
 import { revokeInvite } from '@/http/revoke-invite'
 import { updateMember } from '@/http/update-member'
 
-export async function removeMemberAction(memberId: string) {
-  const currentOrg = getCurrentOrg()
-
-  await removeMember({
-    org: currentOrg!,
-    memberId,
-  })
-  revalidateTag(`${currentOrg}/membes`)
-}
-
-export async function updateMemeberAction(memberId: string, role: Role) {
-  const currentOrg = getCurrentOrg()
-
-  await updateMember({
-    org: currentOrg!,
-    memberId,
-    role,
-  })
-  revalidateTag(`${currentOrg}/membes`)
-}
-export async function revokeInviteAction(inviteId: string) {
-  const currentOrg = getCurrentOrg()
-
-  await revokeInvite({
-    org: currentOrg!,
-    inviteId,
-  })
-  revalidateTag(`${currentOrg}/invites`)
-}
-
 const inviteSchema = z.object({
-  email: z.string().email({ message: 'Invalid email address' }),
+  email: z.string().email({ message: 'Invalid e-mail address.' }),
   role: roleSchema,
 })
 
 export async function createInviteAction(data: FormData) {
+  const currentOrg = getCurrentOrg()!
   const result = inviteSchema.safeParse(Object.fromEntries(data))
-  const currentOrg = getCurrentOrg()
+
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
 
@@ -59,10 +30,11 @@ export async function createInviteAction(data: FormData) {
 
   try {
     await createInvite({
+      org: currentOrg,
       email,
       role,
-      org: getCurrentOrg()!,
     })
+
     revalidateTag(`${currentOrg}/invites`)
   } catch (err) {
     if (err instanceof HTTPError) {
@@ -82,7 +54,41 @@ export async function createInviteAction(data: FormData) {
 
   return {
     success: true,
-    message: 'Successfully created invite',
+    message: 'Successfully created the invite.',
     errors: null,
   }
+}
+
+export async function removeMemberAction(memberId: string) {
+  const currentOrg = getCurrentOrg()
+
+  await removeMember({
+    org: currentOrg!,
+    memberId,
+  })
+
+  revalidateTag(`${currentOrg}/members`)
+}
+
+export async function updateMemberAction(memberId: string, role: Role) {
+  const currentOrg = getCurrentOrg()
+
+  await updateMember({
+    org: currentOrg!,
+    memberId,
+    role,
+  })
+
+  revalidateTag(`${currentOrg}/members`)
+}
+
+export async function revokeInviteAction(inviteId: string) {
+  const currentOrg = getCurrentOrg()
+
+  await revokeInvite({
+    org: currentOrg!,
+    inviteId,
+  })
+
+  revalidateTag(`${currentOrg}/invites`)
 }

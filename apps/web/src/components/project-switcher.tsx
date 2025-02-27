@@ -1,4 +1,5 @@
 'use client'
+
 import { useQuery } from '@tanstack/react-query'
 import { ChevronsUpDown, Loader2, PlusCircle } from 'lucide-react'
 import Link from 'next/link'
@@ -17,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Skeleton } from './ui/skeleton'
+
 export function ProjectSwitcher() {
   const { slug: orgSlug, project: projectSlug } = useParams<{
     slug: string
@@ -39,14 +41,14 @@ export function ProjectSwitcher() {
       <DropdownMenuTrigger className="flex w-[168px] items-center gap-2 rounded p-1 text-sm font-medium outline-none focus-visible:ring-2 focus-visible:ring-primary">
         {isLoading ? (
           <>
-            <Skeleton className="size-4 shrink-0 rounded-full" />
-            <Skeleton className="h-4 w-full" />
+            <Skeleton className="size-4 rounded-full" />
+            <Skeleton className="h-4 w-full flex-1" />
           </>
         ) : (
           <>
             {currentProject ? (
               <>
-                <Avatar className="mr-2 size-4">
+                <Avatar className="size-4">
                   {currentProject.avatarUrl && (
                     <AvatarImage src={currentProject.avatarUrl} />
                   )}
@@ -61,6 +63,7 @@ export function ProjectSwitcher() {
             )}
           </>
         )}
+
         {isLoading ? (
           <Loader2 className="ml-auto size-4 shrink-0 animate-spin text-muted-foreground" />
         ) : (

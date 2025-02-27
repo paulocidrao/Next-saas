@@ -2,16 +2,16 @@ import { XOctagon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-import { revokeInviteAction } from './action'
+import { revokeInviteAction } from './actions'
 
-interface RevokeInviteButtonprops {
+interface RevokeInviteButtonProps {
   inviteId: string
 }
 
-export function RevokeInviteButton({ inviteId }: RevokeInviteButtonprops) {
+export function RevokeInviteButton({ inviteId }: RevokeInviteButtonProps) {
   return (
     <form action={revokeInviteAction.bind(null, inviteId)}>
-      <Button type="submit" size="sm" variant="destructive">
+      <Button size="sm" variant="destructive">
         <XOctagon className="mr-2 size-4" />
         Revoke invite
       </Button>

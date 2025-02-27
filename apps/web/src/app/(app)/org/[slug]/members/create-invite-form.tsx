@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select'
 import { useFormState } from '@/hooks/use-form-state'
 
-import { createInviteAction } from './action'
+import { createInviteAction } from './actions'
 
 export function CreateInviteForm() {
   const [{ errors, message, success }, handleSubmit, isPending] =
@@ -32,18 +32,18 @@ export function CreateInviteForm() {
         </Alert>
       )}
 
-      <div className=" flex items-center gap-2">
+      <div className="flex items-center gap-2">
         <div className="flex-1 space-y-1">
           <Input
             name="email"
             id="email"
             type="email"
-            placeholder="email@example.com"
+            placeholder="john@example.com"
           />
 
-          {errors?.name && (
+          {errors?.email && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
-              {errors.name[0]}
+              {errors.email[0]}
             </p>
           )}
         </div>

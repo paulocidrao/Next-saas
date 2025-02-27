@@ -68,6 +68,7 @@ export async function createOrganizationAction(data: FormData) {
       domain,
       shouldAttachUsersByDomain,
     })
+
     revalidateTag('organizations')
   } catch (err) {
     if (err instanceof HTTPError) {
@@ -91,6 +92,7 @@ export async function createOrganizationAction(data: FormData) {
     errors: null,
   }
 }
+
 export async function updateOrganizationAction(data: FormData) {
   const currentOrg = getCurrentOrg()
 
@@ -111,6 +113,7 @@ export async function updateOrganizationAction(data: FormData) {
       domain,
       shouldAttachUsersByDomain,
     })
+
     revalidateTag('organizations')
   } catch (err) {
     if (err instanceof HTTPError) {

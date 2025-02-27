@@ -20,7 +20,6 @@ import { getBilling } from '@/http/get-billing'
 
 export async function Billing() {
   const currentOrg = getCurrentOrg()
-
   const { billing } = await getBilling(currentOrg!)
 
   return (
@@ -31,9 +30,10 @@ export async function Billing() {
         <CardHeader>
           <CardTitle>Billing</CardTitle>
           <CardDescription>
-            Information about your organization cost
+            Information about your organization costs
           </CardDescription>
         </CardHeader>
+
         <CardContent>
           <Table>
             <TableHeader>
@@ -54,7 +54,7 @@ export async function Billing() {
                   {billing.projects.amount}
                 </TableCell>
                 <TableCell className="text-right">
-                  {billing.projects.price.toLocaleString('en-Us', {
+                  {billing.projects.price.toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'USD',
                   })}{' '}
@@ -66,14 +66,13 @@ export async function Billing() {
                   each)
                 </TableCell>
               </TableRow>
-
               <TableRow>
                 <TableCell>Amount of seats</TableCell>
                 <TableCell className="text-right">
                   {billing.seats.amount}
                 </TableCell>
                 <TableCell className="text-right">
-                  {billing.seats.price.toLocaleString('en-Us', {
+                  {billing.seats.price.toLocaleString('en-US', {
                     style: 'currency',
                     currency: 'USD',
                   })}{' '}

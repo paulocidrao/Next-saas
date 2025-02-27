@@ -1,19 +1,19 @@
-import type { Role } from '@saas/auth'
+import { Role } from '@saas/auth'
 
 import { api } from './api-client'
 
 interface CreateInviteRequest {
-  email: string
   org: string
+  email: string
   role: Role
 }
 
 type CreateInviteResponse = void
 
 export async function createInvite({
+  org,
   email,
   role,
-  org,
 }: CreateInviteRequest): Promise<CreateInviteResponse> {
   await api.post(`organizations/${org}/invites`, {
     json: {

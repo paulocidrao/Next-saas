@@ -16,29 +16,29 @@ export default async function Settings() {
   const currentOrg = getCurrentOrg()
   const permissions = await ability()
 
-  const canUpdateOrganizations = permissions?.can('update', 'Organization')
+  const canUpdateOrganization = permissions?.can('update', 'Organization')
   const canGetBilling = permissions?.can('get', 'Billing')
-  const canShutDownOrgnaization = permissions?.can('delete', 'Organization')
+  const canShutdownOrganization = permissions?.can('delete', 'Organization')
 
   const { organization } = await getOrganization(currentOrg!)
 
   return (
     <div className="space-y-4">
-      <h1 className=" text-2xl font-bold">Settings</h1>
+      <h1 className="text-2xl font-bold">Settings</h1>
 
       <div className="space-y-4">
-        {canUpdateOrganizations && (
+        {canUpdateOrganization && (
           <Card>
             <CardHeader>
-              <CardTitle>Organization Settings</CardTitle>
+              <CardTitle>Organization settings</CardTitle>
               <CardDescription>
-                Uptade your Organization details
+                Update your organization details
               </CardDescription>
             </CardHeader>
             <CardContent>
               <OrganizationForm
                 isUpdating
-                initalData={{
+                initialData={{
                   name: organization.name,
                   domain: organization.domain,
                   shouldAttachUsersByDomain:
@@ -48,14 +48,15 @@ export default async function Settings() {
             </CardContent>
           </Card>
         )}
+
         {canGetBilling && <Billing />}
 
-        {canShutDownOrgnaization && (
+        {canShutdownOrganization && (
           <Card>
             <CardHeader>
-              <CardTitle>Shutdown Organization</CardTitle>
+              <CardTitle>Shutdown organization</CardTitle>
               <CardDescription>
-                This will delete all organization data inclding all projects.
+                This will delete all organization data including all projects.
                 You cannot undo this action.
               </CardDescription>
             </CardHeader>

@@ -26,9 +26,9 @@ export async function createProjectAction(data: FormData) {
 
   try {
     await createProject({
+      org: getCurrentOrg()!,
       name,
       description,
-      org: getCurrentOrg()!,
     })
   } catch (err) {
     if (err instanceof HTTPError) {
