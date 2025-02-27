@@ -42,7 +42,7 @@ export async function signInWithEmailAndPassword(data: FormData) {
       try {
         await acceptInvite(inviteId)
         cookies().delete('inviteId')
-      } catch { }
+      } catch {}
     }
   } catch (err) {
     if (err instanceof HTTPError) {

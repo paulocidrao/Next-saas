@@ -1,15 +1,15 @@
 'use server'
 
-import { roleSchema, type Role } from '@saas/auth'
+import { type Role, roleSchema } from '@saas/auth'
+import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
 
 import { getCurrentOrg } from '@/auth/auth'
+import { createInvite } from '@/http/create-invite'
 import { removeMember } from '@/http/remove-member'
 import { revokeInvite } from '@/http/revoke-invite'
 import { updateMember } from '@/http/update-member'
-import { createInvite } from '@/http/create-invite'
-import { HTTPError } from 'ky'
 
 export async function removeMemberAction(memberId: string) {
   const currentOrg = getCurrentOrg()

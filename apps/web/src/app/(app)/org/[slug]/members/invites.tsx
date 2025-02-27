@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 import { getinvites } from '@/http/get-invites'
 
-import { RevokeInviteButton } from './revoke-invite-button'
 import { CreateInviteForm } from './create-invite-form'
+import { RevokeInviteButton } from './revoke-invite-button'
 
 export async function Invites() {
   const currentOrg = getCurrentOrg()
